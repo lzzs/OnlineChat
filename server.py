@@ -3,21 +3,19 @@ from sqlite3 import connect
 import threading
 from datetime import *
 
-# 时间格式声明，用于后面的记录系统时间
-ISOTIMEFORMAT = '%Y-%m-%d %H:%M:%S'
-
-# 设置IP地址和端口号
-IP = '127.1.1.1'
+# 时间格式
+time_format = '%Y-%m-%d %H:%M:%S'
+IP = '127.0.0.1'
 PORT = 30000
 
-# 用户列表和套接字列表，用于后面给每个套接字发送信息
+# 用户列表和套接字列表
 user_list = []
 socket_list = []
 
-# 聊天记录存储至当前目录下的serverlog.txt文件中
+# 聊天记录日志
 try:
     with open('serverlog.txt', 'a+') as serverlog:
-        curtime = datetime.now().strftime(ISOTIMEFORMAT)
+        curtime = datetime.now().strftime(time_format)
         serverlog.write('\n\n-----------服务器打开时间：' + str(curtime) + '，开始记录聊天-----------\n')
 except:
     print('ERROR!')
@@ -32,7 +30,7 @@ def read_client(s, nickname):
     try:
         return s.recv(2048).decode('utf-8')  # 获取此套接字（用户）发送的消息
     except:  # 一旦断开连接则记录log以及向其他套接字发送相关信息
-        curtime = datetime.now().strftime(ISOTIMEFORMAT)  # 获取当前时间
+        curtime = datetime.now().strftime(time_format)  # 获取当前时间
         print(curtime)
         print(nickname + ' 离开了聊天室!')
         with open('serverlog.txt', 'a+') as serverlog:  # log记录
@@ -52,7 +50,7 @@ def socket_target(s, nickname):
             if content is None:
                 break
             else:
-                curtime = datetime.now().strftime(ISOTIMEFORMAT)  # 系统时间打印
+                curtime = datetime.now().strftime(time_format)  # 系统时间打印
                 print(curtime)
                 print(nickname + '说：' + content)
                 with open('serverlog.txt', 'a+') as serverlog:  # log记录
@@ -78,7 +76,7 @@ while True:  # 不断接受新的套接字进来，实现“多人”
                 break
 
     user_list.append(nickname)  # 用户列表更新，加入新用户（新的套接字）
-    curtime = datetime.now().strftime(ISOTIMEFORMAT)
+    curtime = datetime.now().strftime(time_format)
     print(curtime)
     print(nickname + ' 进入了聊天室!')
 

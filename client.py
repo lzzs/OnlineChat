@@ -6,7 +6,7 @@ import tkinter
 import tkinter.messagebox
 from tkinter.scrolledtext import ScrolledText
 
-ISOTIMEFORMAT = '%Y-%m-%d %H:%M:%S'  # 时间格式声明
+time_format = '%Y-%m-%d %H:%M:%S'  # 时间格式声明
 s = socket()  # 套接字
 
 
@@ -28,7 +28,7 @@ def Login_gui_run():
             tkinter.messagebox.showwarning('Warning', message='用户名过长！最多为十个字符！')
         else:
             root.destroy()
-            s.connect(('127.1.1.1', 30000))  # 建立连接
+            s.connect(('127.0.0.1', 30000))  # 建立连接
             s.send(nickname.get().encode('utf-8'))  # 传递用户昵称
             Chat_gui_run()  # 打开聊天窗口
 
@@ -65,7 +65,7 @@ def Chat_gui_run():
     def read_server(s):
         while True:
             content = s.recv(2048).decode('utf-8')  # 接收服务器端发来的消息
-            curtime = datetime.now().strftime(ISOTIMEFORMAT)  # 获取当前系统时间
+            curtime = datetime.now().strftime(time_format)  # 获取当前系统时间
             listbox.insert(tkinter.END, curtime)  # 聊天信息窗口显示（打印）
             listbox.insert(tkinter.END, '\n' + content + '\n\n')
             listbox.see(tkinter.END)  # ScrolledText组件方法，自动定位到结尾，否则只有消息在涨，窗口拖动条不动
