@@ -21,6 +21,7 @@ except:
     print('ERROR!')
 
 # 读取套接字连接
+# 小bug.  因为最上面导入是 from 导入  改为import 导入 才是 socket.socket()
 s = socket()
 s.bind((IP, PORT))
 s.listen()
